@@ -1,0 +1,121 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include "LinkedList.h"
+#include "parser.h"
+#include "Menu.h"
+#include "Biblioteca.h"
+#include "Libro.h"
+#include "Editorial.h"
+
+
+/** \brief Carga los datos de los empleados desde el archivo data.csv (modo texto).
+ *
+ * \param path char* Nombre y ruta del archivo.
+ * \param pArrayListEmployee LinkedList* Lista linkeada donde se ubican los datos.
+ * \return int Devuelve 0 si se realizo o 1 en caso de puntero NULL.
+ *
+ */
+int controller_loadFromTextLibro(char* path , LinkedList* pArrayListLibro)
+{
+	FILE* pArchivo = NULL;
+
+	int retorno = 1;
+
+	if(path != NULL && pArrayListLibro != NULL)
+	{
+		pArchivo = fopen(path, "r");
+		if(pArchivo != NULL)
+		{
+			parser_LibroFromText(pArchivo, pArrayListLibro);
+			fclose(pArchivo);
+			retorno = 0;
+		}
+
+
+
+
+
+	}
+	return retorno;
+}
+
+int controller_loadFromTextEditorial(char* path , LinkedList* pArrayListEmpleado)
+{
+	FILE* pArchivo = NULL;
+
+	int retorno = 1;
+
+	if(path != NULL && pArrayListEmpleado != NULL)
+	{
+		pArchivo = fopen(path, "r");
+		if(pArchivo != NULL)
+		{
+			parser_EmployeeFromText(pArchivo, pArrayListEmpleado);
+			fclose(pArchivo);
+			retorno = 0;
+		}
+
+
+
+
+
+	}
+	return retorno;
+}
+
+/** \brief Listar empleados
+ *
+  * \param pArrayListEmployee LinkedList* Lista linkeada donde se obtienen los empleados.
+ * \return int Devuelve 0 si se realizo o 1 en caso de puntero NULL.
+ *
+ */
+int controller_ListLibro(LinkedList* pArrayListLibro)
+{
+    eLibro* pLibro = NULL;
+    int indice;
+    int retorno = 1;
+    if(pArrayListLibro != NULL)
+    {
+        printf("%5d | %15s | %15s| %15d | %15s\n", "Id", "Titulo", "Autor", "Precio", "Editorial");
+        for(indice = 0; indice < ll_len(pArrayListLibro); indice++)
+        {
+        		pLibro = (eLibro *)ll_get(pArrayListLibro, indice);
+                eLibro_print(pLibro);
+        }
+        retorno = 0;
+    }
+    return retorno;
+}
+
+/** \brief Ordenar empleados
+ *
+  * \param pArrayListEmployee LinkedList* Lista linkeada donde se obtienen los empleados.
+ * \return int Devuelve 0 si se realizo o 1 en caso de puntero NULL.
+ *
+ */
+int controller_sortLibroAutores(LinkedList* pArrayListLibro)
+{
+    int opcion;
+    int retorno = 1;
+    LinkedList* pAuxListLibro = NULL;
+    if(pArrayListLibro != NULL)
+    {
+    	pAuxListLibro = ll_clone(pArrayListLibro);
+
+
+
+		printf("Ordenando...\n");
+		ll_sort(pAuxListLibro, eLibro_CompararAutor, 1);
+		printf("\nLista de empleados ordenada por Autor(Ascendente).\n\n");
+		controller_ListEmployee(pAuxListLibro);
+
+
+
+        ll_deleteLinkedList(pAuxListLibro);
+        retorno = 0;
+    }
+    return retorno;
+}
+
+
+

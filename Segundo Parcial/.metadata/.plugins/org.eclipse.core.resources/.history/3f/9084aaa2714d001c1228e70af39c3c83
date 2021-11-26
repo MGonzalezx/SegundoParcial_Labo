@@ -1,0 +1,7 @@
+int controller_loadFromText(char* path , LinkedList* pArrayListEmployee);
+int controller_loadFromTextEditorial(char* path , LinkedList* pArrayListEmpleado);
+int controller_ListLibro(LinkedList* pArrayListLibro, LinkedList* pArrayListEditorial);
+int controller_sortLibroAutores(LinkedList* pArrayListLibro, LinkedList* pArrayListEditorial);
+
+
+

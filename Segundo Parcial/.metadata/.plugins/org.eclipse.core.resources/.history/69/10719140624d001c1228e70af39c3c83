@@ -1,0 +1,12 @@
+/*
+ * Editorial.c
+ *
+ *  Created on: 21 nov. 2021
+ *      Author: RocioGonzalez
+ */
+
+#include "Editorial.h"
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>

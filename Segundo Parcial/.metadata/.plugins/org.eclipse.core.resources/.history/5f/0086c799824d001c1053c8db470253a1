@@ -1,0 +1,235 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <ctype.h>
+#include "LinkedList.h"
+#include "Libro.h"
+#include "Editorial.h"
+#include "parser.h"
+#include "Biblioteca.h"
+
+/** \brief Parsea los datos los datos de los empleados desde el archivo data.csv (modo texto).
+ *
+ * \param pFile FILE* Archivo data.csv abierto en modo lectura.
+ * \param pArrayListEmployee LinkedList* Lista linkeada donde se ubican los datos.
+ * \return int Devuelve 0 si se realizo o 1 en caso de puntero NULL.
+ *
+ */
+int parser_LibroFromText(FILE* pFile , LinkedList* pArrayListLibro)
+{
+
+	eLibro* pLibro = NULL;
+	eLibro* pAuxLibro = NULL;
+	int cantidadDeDatosLeidos;
+	char id[15];
+	char titulo[128];
+	char autor[128];
+	char precio[15];
+	char idEditorial[15];
+	int retorno = 1;
+	FILE* archivoUltimoId;
+	int lastId;
+	int mayor;
+
+	if(pArrayListLibro != NULL)
+	{
+		while(!feof(pFile))
+		{
+			cantidadDeDatosLeidos = fscanf(pFile,"%[^,],%[^,],%[^,],%[^,],%[^\n]\n", id, titulo, autor, precio, idEditorial);
+			if(cantidadDeDatosLeidos == 5 && isdigit(id[0]) != 0)
+			{
+				pLibro = eLibro_newParametros(id, titulo, autor, precio, idEditorial);
+				if(pLibro != NULL)
+				{
+					ll_add(pArrayListLibro, pLibro);
+				}
+			}
+
+		}
+
+		archivoUltimoId = fopen("ultimo_id.txt","r");
+		if(archivoUltimoId == NULL)
+		{
+			for(int i = 0; i <ll_len(pArrayListLibro); i++ )
+			{
+				pAuxLibro = ll_get(pArrayListLibro, i);
+				//printf("%d\n", pAuxEmployee->id);
+				eLibro_getId(pAuxLibro,&lastId);
+				if( i == 0 || mayor < lastId)
+				{
+
+					mayor = lastId;
+					//printf("%d\n", mayor);
+				}
+			}
+			archivoUltimoId = fopen("ultimo_id.txt","w");
+			if(archivoUltimoId != NULL)
+			{
+				fprintf(archivoUltimoId, "%d",mayor);
+
+
+			}
+		}
+		fclose(archivoUltimoId);
+
+		retorno = 0;
+	}
+	return retorno;
+}
+
+int parser_EditorialFromText(FILE* pFile , LinkedList* pArrayListEditorial)
+{
+
+	eEditorial* pEditorial = NULL;
+	eEditorial* pAuxEditorial = NULL;
+	int cantidadDeDatosLeidos;
+	char id[15];
+	char nombre[128];
+	int retorno = 1;
+	FILE* archivoUltimoIdEditorial;
+	int lastId;
+	int mayor;
+
+	if(pArrayListEditorial != NULL)
+	{
+		while(!feof(pFile))
+		{
+			cantidadDeDatosLeidos = fscanf(pFile,"%[^,],%[^\n]\n", id, nombre);
+			if(cantidadDeDatosLeidos == 2 && isdigit(id[0]) != 0)
+			{
+				pEditorial = eEditorial_newParametros(id, nombre);
+				if(pEditorial != NULL)
+				{
+					ll_add(pArrayListEditorial, pEditorial);
+				}
+			}
+
+		}
+
+		archivoUltimoIdEditorial = fopen("ultimo_id_editorial.txt","r");
+		if(archivoUltimoIdEditorial == NULL)
+		{
+			for(int i = 0; i <ll_len(pArrayListEditorial); i++ )
+			{
+				pAuxEditorial = ll_get(pArrayListEditorial, i);
+				//printf("%d\n", pAuxEmployee->id);
+				eEditorial_getId(pAuxEditorial,&lastId);
+				if( i == 0 || mayor < lastId)
+				{
+
+					mayor = lastId;
+					//printf("%d\n", mayor);
+				}
+			}
+			archivoUltimoIdEditorial = fopen("ultimo_id_editorial.txt","w");
+			if(archivoUltimoIdEditorial != NULL)
+			{
+				fprintf(archivoUltimoIdEditorial, "%d",mayor);
+
+
+			}
+		}
+		fclose(archivoUltimoIdEditorial);
+
+		retorno = 0;
+	}
+	return retorno;
+}
+
+
+
+/** \brief Parsea los datos de los empleados desde el archivo data.csv (modo binario).
+ *
+ * \param pFile FILE* Archivo data.bin abierto en modo lectura.
+ * \param pArrayListEmployee LinkedList* LinkedList* Lista linkeada donde se ubican los datos.
+ * \return int Devuelve 0 si se realizo o 1 en caso de puntero NULL.
+ *
+ */
+
+/*int parser_EmployeeFromBinary(FILE* pFile, LinkedList* pArrayListEmployee)
+{
+    Employee auxEmployee;
+    Employee* pEmployee = NULL;
+    int retorno = 1;
+    int cont;
+    if(pArrayListEmployee != NULL)
+    {
+    	while(!feof(pFile))
+		{
+			cont = fread(&auxEmployee,sizeof(Employee),1,pFile);
+
+			if(cont == 1)
+			{
+				pEmployee = employee_new();
+				if(pEmployee != NULL)
+				{
+					*pEmployee = auxEmployee;
+					ll_add(pArrayListEmployee, pEmployee);
+
+					retorno = 0;
+				}
+			}
+
+
+		}
+		fclose(pFile);
+    }
+
+    return retorno;
+}*/
+
+/** \brief Parsea los datos los datos de los empleados desde el archivo data.csv (modo texto).
+ *
+ * \param pFile FILE* Archivo data.csv abierto en modo lectura.
+ * \param pArrayListEmployee LinkedList* Lista linkeada donde se ubican los datos.
+ * \return int Devuelve 0 si se realizo o 1 en caso de puntero NULL.
+ *
+ */
+
+/*int parser_TextFromEmployee(FILE* pFile , LinkedList* pArrayListEmployee)
+{
+
+	Employee* pEmployee = NULL;
+	//int cantidadDeDatosLeidos;
+	int indice;
+	int retorno = 1;
+
+	if(pArrayListEmployee != NULL)
+	{
+		fprintf(pFile, "%s,%s,%s,%s\n", "Id", "Nombre", "HorasTrabajadas", "Sueldo");
+		for(indice = 0; indice < ll_len(pArrayListEmployee); indice++)
+		{
+			pEmployee = (Employee *)ll_get(pArrayListEmployee, indice);
+			fprintf(pFile, "%d,%s,%d,%d\n", pEmployee->id, pEmployee->nombre, pEmployee->horasTrabajadas, pEmployee->sueldo);
+		}
+		retorno = 0;
+	}
+	return retorno;
+}*/
+
+/** \brief Parsea los datos de los empleados desde el archivo data.csv (modo binario).
+ *
+ * \param pFile FILE* Archivo data.bin abierto en modo lectura.
+ * \param pArrayListEmployee LinkedList* LinkedList* Lista linkeada donde se ubican los datos.
+ * \return int Devuelve 0 si se realizo o 1 en caso de puntero NULL.
+ *
+ */
+
+/*
+int parser_BinaryFromEmployee(FILE* pFile, LinkedList* pArrayListEmployee)
+{
+    Employee* pEmployee = NULL;
+    int retorno = 1;
+    int indice;
+    if(pArrayListEmployee != NULL)
+    {
+    	for(indice = 0; indice < ll_len(pArrayListEmployee); indice++)
+		{
+    		pEmployee = (Employee *)ll_get(pArrayListEmployee, indice);
+			fwrite(pEmployee, sizeof(Employee), 1, pFile);
+
+		}
+    	retorno = 0;
+    }
+
+    return retorno;
+}*/

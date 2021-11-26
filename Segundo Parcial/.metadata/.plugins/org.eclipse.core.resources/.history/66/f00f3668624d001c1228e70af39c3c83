@@ -1,0 +1,124 @@
+/*
+ * Editorial.c
+ *
+ *  Created on: 21 nov. 2021
+ *      Author: RocioGonzalez
+ */
+
+#include "Editorial.h"
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+/**\brief Constructor de eLibro.
+ *
+ * \param void
+ * \return eLibro* Retorna un puntero del libro o NULL.
+ *
+ */
+eEditorial* eEditorial_new(void)
+{
+	eEditorial* pEditorial = NULL;
+	pEditorial = (eEditorial *) malloc(sizeof(eEditorial));
+    return pEditorial;
+}
+
+/** \brief Constructor parametrizado del libro.
+ *
+ * \param idStr char*
+ * \param tituloStr char*
+ * \param autorStr char*
+ * \param precioStr char*
+ * \param editorialStr char*
+ * \return eLibro* Retorna un puntero del libro con los datos cargados o NULL.
+ *
+ */
+eEditorial* eEditorial_newParametros(char* idStr,char* nombreStr)
+{
+	eEditorial* pEditorial = NULL;
+    int id;
+    if(idStr != NULL && nombreStr != NULL )
+    {
+    	pEditorial = eLibro_new();
+        if(pEditorial != NULL)
+        {
+            id = atoi(idStr);
+            eEditorial_setId(pEditorial, id);
+            eEditorial_setNombre(pEditorial, nombreStr);
+        }
+
+    }
+    return pEditorial;
+}
+/** \brief  Establece el id de un empleado.
+ *
+ * \param this Employee*
+ * \param id int
+ * \return int Retorna 0 si se realizo o 1 en caso de puntero NULL.
+ *
+ */
+int eEditorial_setId(eLibro* this,int id)
+{
+	int retorno = 1;
+    if(this != NULL)
+    {
+        this->id = id;
+        retorno =0;
+    }
+    return retorno;
+}
+
+/** \brief Devuelve el id de un empleado.
+ *
+ * \param this Employee*
+ * \param id int*
+ * \return int Retorna 0 si se realizo o 1 en caso de puntero NULL.
+ *
+ */
+int eEditorial_getId(eLibro* this,int* id)
+{
+	int retorno = 1;
+    if(this != NULL && id != NULL)
+    {
+        *id = this->id;
+        retorno = 0;
+    }
+    return retorno;
+}
+
+/** \brief Establece el nombre de un empleado.
+ *
+ * \param this Employee*
+ * \param nombre char*
+ * \return int Retorna 0 si se realizo o 1 en caso de puntero NULL.
+ *
+ */
+int eEditorial_setNombre(eLibro* this,char* titulo)
+{
+	int retorno = 1;
+    if(this != NULL && titulo != NULL)
+    {
+        strcpy(this->titulo, titulo);
+        retorno = 0;
+    }
+    return retorno;
+}
+
+/** \brief Devuelve el nombre de un empleado.
+ *
+ * \param this Employee*
+ * \param nombre char*
+ * \return int Retorna 0 si se realizo o 1 en caso de puntero NULL.
+ *
+ */
+int eEditorial_getNombre(eLibro* this,char* titulo)
+{
+	int retorno = 1;
+    if(this != NULL && titulo != NULL)
+    {
+        strcpy(titulo, this->titulo);
+        retorno = 0;
+    }
+    return retorno;
+}

@@ -1,0 +1,154 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include "LinkedList.h"
+#include "parser.h"
+#include "Menu.h"
+#include "Biblioteca.h"
+#include "Libro.h"
+#include "Editorial.h"
+#include "Controller.h"
+
+
+/** \brief Carga los datos de los empleados desde el archivo data.csv (modo texto).
+ *
+ * \param path char* Nombre y ruta del archivo.
+ * \param pArrayListEmployee LinkedList* Lista linkeada donde se ubican los datos.
+ * \return int Devuelve 0 si se realizo o 1 en caso de puntero NULL.
+ *
+ */
+int controller_loadFromTextLibro(char* path , LinkedList* pArrayListLibro)
+{
+	FILE* pArchivo = NULL;
+
+	int retorno = 1;
+
+	if(path != NULL && pArrayListLibro != NULL)
+	{
+		pArchivo = fopen(path, "r");
+		if(pArchivo != NULL)
+		{
+			parser_LibroFromText(pArchivo, pArrayListLibro);
+			fclose(pArchivo);
+			retorno = 0;
+		}
+
+
+
+
+
+	}
+	return retorno;
+}
+
+int controller_loadFromTextEditorial(char* path , LinkedList* pArrayListEditorial)
+{
+	FILE* pArchivo = NULL;
+
+	int retorno = 1;
+
+	if(path != NULL && pArrayListEditorial != NULL)
+	{
+		pArchivo = fopen(path, "r");
+		if(pArchivo != NULL)
+		{
+			parser_EditorialFromText(pArchivo, pArrayListEditorial);
+			fclose(pArchivo);
+			retorno = 0;
+		}
+
+	}
+	return retorno;
+}
+
+
+/** \brief Listar empleados
+ *
+  * \param pArrayListEmployee LinkedList* Lista linkeada donde se obtienen los empleados.
+ * \return int Devuelve 0 si se realizo o 1 en caso de puntero NULL.
+ *
+ */
+int controller_ListLibro(LinkedList* pArrayListLibro)
+{
+	int retorno = -1;
+	char editorialNombre[128];
+	int auxIdEditorial;
+	eLibro* pLibro;
+	if((ll_len(pArrayListLibro))>0)
+	{
+		printf("%5s | %52s | %25s| %20s | %30s\n", "Id", "Titulo", "Autor", "Precio", "Editorial");
+		for(int i=0; i<ll_len(pArrayListLibro); i++)
+		{
+			pLibro = ll_get(pArrayListLibro, i);
+			auxIdEditorial = pLibro->idEditorial;
+			switch(auxIdEditorial)
+			{
+			case 1:
+				strcpy (editorialNombre, "1-PLANETA");
+				break;
+			case 2:
+				strcpy (editorialNombre, "2-SIGLO XXI EDITORIALES");
+				break;
+			case 3:
+				strcpy (editorialNombre, "3-PEARSON");
+				break;
+			case 4:
+				strcpy (editorialNombre, "4-MINOTAURO");
+				break;
+			case 5:
+				strcpy (editorialNombre, "5-SALAMANDRA");
+				break;
+			case 6:
+				strcpy (editorialNombre, "6-PENGUIN");
+				break;
+			default:
+				strcpy(editorialNombre, "ERROR");
+				break;
+			}
+
+			if(pLibro != NULL)
+			{
+				eLibro_print(pLibro);
+				printf("| %30s\n",editorialNombre);
+				retorno = 0;
+			}
+		}
+	}
+	printf("\n");
+	return retorno;
+
+
+
+}
+
+/** \brief Ordenar empleados
+ *
+  * \param pArrayListEmployee LinkedList* Lista linkeada donde se obtienen los empleados.
+ * \return int Devuelve 0 si se realizo o 1 en caso de puntero NULL.
+ *
+ */
+int controller_sortLibroAutores(LinkedList* pArrayListLibro)
+{
+    int retorno = 1;
+    LinkedList* pAuxListLibro = NULL;
+    if(pArrayListLibro != NULL)
+    {
+    	pAuxListLibro = ll_clone(pArrayListLibro);
+
+
+
+		printf("Ordenando...\n");
+		ll_sort(pAuxListLibro, eLibro_CompararAutor, 1);
+		printf("\nLista de empleados ordenada por Autor(Ascendente).\n\n");
+		controller_ListLibro(pAuxListLibro);
+
+
+
+        ll_deleteLinkedList(pAuxListLibro);
+        retorno = 0;
+    }
+    return retorno;
+}
+
+
+

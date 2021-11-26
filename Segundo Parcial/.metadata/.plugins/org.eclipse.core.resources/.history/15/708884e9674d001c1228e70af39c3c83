@@ -1,0 +1,65 @@
+/*
+ ============================================================================
+ Name        : Segundo_Parcial.c
+ Author      : 
+ Version     :
+ Copyright   : Your copyright notice
+ Description : Hello World in C, Ansi-style
+ ============================================================================
+ */
+
+#include <stdio.h>
+#include <stdlib.h>
+#include "Menu.h"
+#include "LinkedList.h"
+#include "Controller.h"
+
+
+int main(void) {
+	setbuf(stdout, NULL);//disable buffer
+	int option = 0;
+	LinkedList* listaEmpleados = ll_newLinkedList();
+	int archivoDataCargado = 0;
+	int guardarCambios = 0;
+	int retorno;
+	do{
+		printf("\t ¡¡¡BIENVENIDO!!!\n");
+		option = menuPrincipal();
+		switch(option)
+		{
+			case 1:
+
+					printf("\nPresione Enter para continuar\n");
+					getchar();
+				break;
+			case 2:
+
+					printf("\nPresione Enter para continuar\n");
+					getchar();
+				break;
+			case 3:
+
+					printf("\nPresione Enter para continuar\n");
+					getchar();
+				break;
+			case 4:
+
+					printf("\nPresione Enter para continuar\n");
+					getchar();
+				break;
+			case 5:
+
+					printf("\nPresione Enter para continuar\n");
+					getchar();
+				break;
+			case 6:
+
+				break;
+
+
+		}
+	}while(option != 6);
+
+	printf("Gracias por usar la aplicacion\n");
+	return EXIT_SUCCESS;
+}

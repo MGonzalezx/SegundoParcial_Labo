@@ -1,0 +1,183 @@
+/*
+ ============================================================================
+ Name        : Segundo_Parcial.c
+ Author      : 
+ Version     :
+ Copyright   : Your copyright notice
+ Description : Hello World in C, Ansi-style
+ ============================================================================
+ */
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include "Menu.h"
+#include "LinkedList.h"
+#include "Controller.h"
+
+
+int main(void) {
+	setbuf(stdout, NULL);//disable buffer
+	int option = 0;
+	LinkedList* listaLibros = ll_newLinkedList();
+	LinkedList* listaEditoriales = ll_newLinkedList();
+	char archivoTxt[20];
+	int archivoDataCargadoLibro = 0;
+	int archivoDataCargadoEditorial = 0;
+	int retorno;
+	do{
+		printf("\t ¡¡¡BIENVENIDO!!!\n");
+		option = menuPrincipal();
+		switch(option)
+		{
+			case 1:
+				if(archivoDataCargadoLibro == 0)
+				{
+					do{
+						printf("Que archivo desea cargar? Ingrese el nombre junto con '.csv': ");
+						 gets(archivoTxt);
+					}while(strcmp(archivoTxt,"libro.csv")!=0);
+
+
+					retorno = controller_loadFromTextLibro(archivoTxt, listaLibros);
+					switch(retorno)
+					{
+						case 0:
+							printf("Archivo de texto cargado exitosamente.\n");
+							archivoDataCargadoLibro = 1;
+							break;
+						case 1:
+							printf("Error al cargar el archivo de texto.\n");
+							break;
+					}
+
+				} else
+				{
+					printf("El archivo ya a sido cargado.\n");
+				}
+
+					printf("\nPresione Enter para continuar\n");
+					getchar();
+				break;
+			case 2:
+				if(archivoDataCargadoEditorial == 0)
+				{
+					do{
+						printf("Que archivo desea cargar? Ingrese el nombre junto con '.csv': ");
+						gets(archivoTxt);
+					}while(strcmp(archivoTxt,"editorial.csv")!=0);
+
+
+					retorno = controller_loadFromTextEditorial(archivoTxt,listaEditoriales);
+					switch(retorno)
+					{
+						case 0:
+							printf("Archivo de texto cargado exitosamente.\n");
+							archivoDataCargadoEditorial = 1;
+							break;
+						case 1:
+							printf("Error al cargar el archivo de texto.\n");
+							break;
+					}
+
+				} else
+				{
+					printf("El archivo ya a sido cargado.\n");
+				}
+					printf("\nPresione Enter para continuar\n");
+					getchar();
+				break;
+			case 3:
+				if(archivoDataCargadoEditorial == 1 && archivoDataCargadoLibro == 1)
+				{
+					printf("ORDENAR LIBROS\n");
+					retorno = controller_sortLibroAutores(listaLibros, listaEditoriales);
+					switch(retorno)
+					{
+						case 0:
+							printf("\nExito al ordenar lista\n");
+							break;
+						case 1:
+							printf("Error al ordenar lista.\n");
+							break;
+					}
+				} else
+				{
+					printf("Los archivos no han sido cargados.\n");
+				}
+					printf("\nPresione Enter para continuar\n");
+					getchar();
+				break;
+			case 4:
+				if(archivoDataCargadoEditorial == 1 && archivoDataCargadoLibro == 1)
+					{
+						retorno = controller_ListLibro(listaLibros, listaEditoriales);
+						switch(retorno)
+						{
+							case 0:
+								printf("\nExito al mostrar la lista\n");
+								break;
+							case 1:
+								printf("Error al mostrar la lista.\n");
+								break;
+						}
+					} else
+					{
+						printf("Los archivos no han sido cargados.\n");
+					}
+					printf("\nPresione Enter para continuar\n");
+					getchar();
+				break;
+			case 5:
+				if(archivoDataCargadoEditorial == 1 && archivoDataCargadoLibro == 1)
+				{
+					retorno = controller_saveAsText("libros_editorial_minotauro.csv",listaLibros);
+					switch(retorno)
+					{
+						case 0:
+							printf("\nExito al guardar la lista filtrada\n");
+							break;
+						case 1:
+							printf("Error al guardar la lista filtrada.\n");
+							break;
+					}
+				} else
+				{
+					printf("Los archivos no han sido cargados.\n");
+				}
+
+					printf("\nPresione Enter para continuar\n");
+					getchar();
+				break;
+			case 6:
+				if(archivoDataCargadoEditorial == 1 && archivoDataCargadoLibro == 1)
+				{
+					retorno = controller_saveAsTextMapeado("mapeado.csv",listaLibros);
+					switch(retorno)
+					{
+						case 0:
+							printf("\nExito al guardar la lista mapeada\n");
+							break;
+						case 1:
+							printf("Error al guardar la lista mapeada.\n");
+							break;
+					}
+				} else
+				{
+					printf("Los archivos no han sido cargados.\n");
+				}
+
+					printf("\nPresione Enter para continuar\n");
+					getchar();
+				break;
+			case 7:
+
+				break;
+
+
+		}
+	}while(option != 7);
+
+	printf("Gracias por usar la aplicacion\n");
+	return EXIT_SUCCESS;
+}

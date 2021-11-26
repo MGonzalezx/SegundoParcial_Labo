@@ -1,0 +1,336 @@
+#include "Libro.h"
+#include "LinkedList.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+/** \brief Constructor de eLibro.
+ *
+ * \param void
+ * \return eLibro* Retorna un puntero del libro o NULL.
+ *
+ */
+eLibro* eLibro_new(void)
+{
+	eLibro* pLibro = NULL;
+	pLibro = (eLibro *) malloc(sizeof(eLibro));
+    return pLibro;
+}
+
+/** \brief Constructor parametrizado del libro.
+ *
+ * \param idStr char*
+ * \param tituloStr char*
+ * \param autorStr char*
+ * \param precioStr char*
+ * \param editorialStr char*
+ * \return eLibro* Retorna un puntero del libro con los datos cargados o NULL.
+ *
+ */
+eLibro* eLibro_newParametros(char* idStr,char* tituloStr,char* autorStr, char* precioStr, char* editorialStr)
+{
+	eLibro* pLibro = NULL;
+    int id;
+    float precio;
+    int idEditorial;
+    if(idStr != NULL && tituloStr != NULL && autorStr != NULL && precioStr != NULL && editorialStr != NULL)
+    {
+    	pLibro = eLibro_new();
+        if(pLibro != NULL)
+        {
+            id = atoi(idStr);
+            idEditorial = atoi(editorialStr);
+            precio = atoi(precioStr);
+            eLibro_setId(pLibro, id);
+            eLibro_setTitulo(pLibro, tituloStr);
+            eLibro_setAutor(pLibro, autorStr);
+            eLibro_setPrecio(pLibro, precio);
+            eLibro_setIdEditorial(pLibro, idEditorial);
+        }
+
+    }
+    return pLibro;
+}
+
+/** \brief  Establece el id de un libro.
+ *
+ * \param this eLibro* libro con el que vamos a trabajar
+ * \param id int id a setear
+ * \return int Retorna 0 si se realizo o 1 en caso de puntero NULL.
+ *
+ */
+int eLibro_setId(eLibro* this,int id)
+{
+	int retorno = 1;
+    if(this != NULL)
+    {
+        this->id = id;
+        retorno =0;
+    }
+    return retorno;
+}
+
+/** \brief Devuelve el id de un libro.
+ *
+ * \param this eLibro* libro con el que vamos a trabajar
+ * \param id int* puntero en donde vamos a poner el id a obtener
+ * \return int Retorna 0 si se realizo o 1 en caso de puntero NULL.
+ *
+ */
+int eLibro_getId(eLibro* this,int* id)
+{
+	int retorno = 1;
+    if(this != NULL && id != NULL)
+    {
+        *id = this->id;
+        retorno = 0;
+    }
+    return retorno;
+}
+
+/** \brief Establece el titulo de un libro.
+ *
+ * \param this eLibro* libro con el que vamos a trabajar
+ * \param titulo char* nombre a setear
+ * \return int Retorna 0 si se realizo o 1 en caso de puntero NULL.
+ *
+ */
+int eLibro_setTitulo(eLibro* this,char* titulo)
+{
+	int retorno = 1;
+    if(this != NULL && titulo != NULL)
+    {
+        strcpy(this->titulo, titulo);
+        retorno = 0;
+    }
+    return retorno;
+}
+
+/** \brief Devuelve el titulo de un libro.
+ *
+ * \param this eLibro* libro con el que vamos a trabajar
+ * \param titulo char* puntero en donde vamos a poner el titulo a obtener
+ * \return int Retorna 0 si se realizo o 1 en caso de puntero NULL.
+ *
+ */
+int eLibro_getTitulo(eLibro* this,char* titulo)
+{
+	int retorno = 1;
+    if(this != NULL && titulo != NULL)
+    {
+        strcpy(titulo, this->titulo);
+        retorno = 0;
+    }
+    return retorno;
+}
+
+
+/** \brief Establece el autor de un libro.
+ *
+ * \param this eLibro* libro con el que vamos a trabajar
+ * \param autor char* autor a setear
+ * \return int Retorna 0 si se realizo o 1 en caso de puntero NULL.
+ *
+ */
+int eLibro_setAutor(eLibro* this,char* autor)
+{
+	int retorno = 1;
+    if(this != NULL && autor != NULL)
+    {
+        strcpy(this->autor, autor);
+        retorno = 0;
+    }
+    return retorno;
+}
+
+/** \brief Devuelve el autor de un libro.
+ *
+ * \param this eLibro* libro con el que vamos a trabajar
+ * \param autor char* puntero en donde vamos a poner el autor a obtener
+ * \return int Retorna 0 si se realizo o 1 en caso de puntero NULL.
+ *
+ */
+int eLibro_getAutor(eLibro* this,char* autor)
+{
+	int retorno = 1;
+    if(this != NULL && autor != NULL)
+    {
+        strcpy(autor, this->autor);
+        retorno = 0;
+    }
+    return retorno;
+}
+
+
+
+/** \brief Establece el id de la editorial de un libro.
+ *
+ * \param this eLibro* libro con el que vamos a trabajar
+ * \param editorial int id de la editorial a setear
+ * \return int Retorna 0 si se realizo o 1 en caso de puntero NULL.
+ *
+ */
+int eLibro_setIdEditorial(eLibro* this,int editorial)
+{
+	int retorno = 1;
+    if(this != NULL)
+    {
+        this->idEditorial = editorial;
+        retorno = 0;
+    }
+    return retorno;
+}
+
+/** \brief Devuelve el id de la editorial de un libro.
+ *
+ * \param this eLibro* libro con el que vamos a trabajar
+ * \param editorial int*  puntero en donde vamos a poner el id de la editorial a obtener
+ * \return int Retorna 0 si se realizo o 1 en caso de puntero NULL.
+ *
+ */
+int eLibro_getIdEditorial(eLibro* this,int* editorial)
+{
+	int retorno = 1;
+    if(this != NULL && editorial != NULL)
+    {
+        *editorial = this->idEditorial;
+        retorno = 0;
+    }
+    return retorno;
+}
+
+/** \brief Establece el precio de un libro.
+ *
+ * \param this eLibro* libro con el que vamos a trabajar
+ * \param precio int precio del libro a setear
+ * \return int Retorna 0 si se realizo o 1 en caso de puntero NULL.
+ *
+ */
+int eLibro_setPrecio(eLibro* this,int precio)
+{
+	int retorno = 1;
+    if(this != NULL)
+    {
+        this->precio = precio;
+        retorno = 0;
+    }
+    return retorno;
+}
+
+/** \brief Devuelve el precio de un libro.
+ *
+ * \param this eLibro* libro con el que vamos a trabajar
+ * \param precio int* puntero en donde vamos a poner el precio del libro a obtener
+ * \return int Retorna 0 si se realizo o 1 en caso de puntero NULL.
+ *
+ */
+int eLibro_getPrecio(eLibro* this,int* precio)
+{
+	int retorno = 1;
+    if(this != NULL && precio != NULL)
+    {
+        *precio = this->precio;
+        retorno = 0;
+    }
+    return retorno;
+}
+
+/** \brief Imprime un libro en pantalla.
+ *
+ * \param this eLibro* libro con el que vamos a trabajar
+ * \return int Retorna 0 si se realizo o 1 en caso de puntero NULL.
+ *
+ */
+int eLibro_print(eLibro* this)
+{
+	int retorno = 1;
+    if(this != NULL)
+    {
+
+    printf("%5d | %52s | %25s | %20.1f", this->id, this->titulo, this->autor, this->precio);
+
+
+       retorno = 0;
+    }
+    return retorno;
+}
+
+/** \brief Compara dos libros segun el nombre del autor.
+ *
+ * \param this void* un libro
+ * \param thisDos void* otro libro
+ * \return int Retorna 1 si el primero es mayor, 0 si son iguales, o -1 si el primero es menor.
+ *
+ */
+int eLibro_CompararAutor(void* this, void* thisDos)
+{
+    int retorno;
+    eLibro* pLibro = NULL;
+    eLibro* pLibroDos = NULL;
+    if(this != NULL && thisDos != NULL)
+    {
+    	pLibro = (eLibro*)this;
+    	pLibroDos = (eLibro*)thisDos;
+        retorno = strcmp(pLibro->autor, pLibroDos->autor);
+    }
+    return retorno;
+
+}
+
+
+
+/** \brief Filtra todos los libros cuya editorial sea Minotauro
+ *
+ * \param pElement void* elemento a ser filtrado
+ * \return int Retorna 1 si funciono o -1 si no funciono
+ *
+ */
+int FiltraNombreMinotauroEditoriales(void* pElement)
+{
+	int editorial;
+    int retorno = -1;
+    eLibro* pLibro = NULL;
+    if(pElement != NULL)
+    {
+        retorno = 0;
+
+        pLibro = (eLibro*) pElement;
+
+        eLibro_getIdEditorial(pLibro, &editorial);
+
+        if(editorial == 4)
+        {
+            retorno = 1;
+        }
+    }
+    return retorno;
+}
+
+int MapearPrecios(void* pElement)
+{
+  int retorno = -1;
+  float precioConDescuento;
+  int precio;
+  int idEditorial;
+
+  eLibro* pLibro;
+
+  if(pElement != NULL)
+  {
+	  pLibro = (eLibro*) pElement;
+    eLibro_getIdEditorial(pLibro, &idEditorial);
+    eLibro_getPrecio(pLibro, &precioConDescuento);
+    eLibro_getPrecio(pLibro, &precio);
+    if(idEditorial == 1 && precio >= 300)
+    {
+    	precioConDescuento = (float)precio - (float)((precio)*0.20);
+    }else if(idEditorial == 2 && precio <= 200)
+    {
+    	precioConDescuento = (float)precio - (float)((precio)*0.10);
+    }
+    eLibro_setPrecio(pLibro, precioConDescuento);
+    retorno = 0;
+  }
+  return retorno;
+
+}
